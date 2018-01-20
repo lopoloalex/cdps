@@ -13,8 +13,8 @@ os.system("echo \"listen_addresses='10.1.4.31'\" >> /etc/postgresql/9.6/main/pos
 os.system("echo \"host all all 10.1.4.0/24 trust\" >> /etc/postgresql/9.6/main/pg_hba.conf")
 
 
-os.system("echo \"CREATE USER crm with PASSWORD 'pene';\" | psql")
-os.system("echo \"CREATE DATABASE crm;\" | psql")
+os.system("echo \"CREATE USER crm with PASSWORD 'xxxx';\" | sudo -u postgres psql")
+os.system("echo \"CREATE DATABASE crm;\" | sudo -u postgres psql")
 os.system("echo \"GRANT ALL PRIVILEGES ON DATABASE crm to crm;\" | sudo -u postgres psql")
 os.system("systemctl restart postgresql")
 
