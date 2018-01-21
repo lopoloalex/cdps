@@ -27,6 +27,7 @@ os.system("npm install")
 os.system("npm install forever")
 print(" ---- FIN INSTALACION NPM ----")
 
+os.system("export DATABASE_URL=postgres://crm:xxxx@10.1.4.31:5432/crm")
 os.system("export CLOUDINARY_SUBFOLDER=/mnt/nas")
 
 
@@ -37,7 +38,7 @@ if socket.gethostname() == "s1":
 	os.system("npm run-script seed_local")
 
 os.system("sudo iptables -t nat -A PREROUTING -i eth1 -p tcp --dport 80 -j REDIRECT --to-port 3000")
-os.system("export DATABASE_URL=postgres://crm:xxxx@10.1.4.31:5432/crm && ./node_modules/forever/bin/forever start ./bin/www")
+os.system("./node_modules/forever/bin/forever start ./bin/www")
 
 
 
