@@ -36,6 +36,7 @@ if socket.gethostname() == "s1":
 	print(" ---- MIGRACION DE LA BASE DE DATOS ----")
 	os.system("npm run-script migrate_local")
 	os.system("npm run-script seed_local")
+	os.system("export DATABASE_URL=postgres://crm:xxxx@10.1.4.31:5432/crm")
 
 os.system("sudo iptables -t nat -A PREROUTING -i eth1 -p tcp --dport 80 -j REDIRECT --to-port 3000")
 os.system("./node_modules/forever/bin/forever start ./bin/www")
