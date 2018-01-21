@@ -3,16 +3,17 @@
 # -*- coding: latin-1 -*-
 
 
-# Importamos las bibliotecas que vamos a usar.
+import time
 import sys
 import os
+import socket
 
-# Comandos para la instalacion de NodeJS para los servidores, comandos sacados de la practica 4 de CDPS.
-os.system("apt-get update")
-os.system("apt-get install software-properties-common -y")
-os.system("apt-get install git -y")
-os.system("apt-get install make g++ -y")
-os.system("apt-get install python-software-properties -y")
-os.system("add-apt-repository ppa:chris-lea/node.js -y")
-os.system("apt-get update")
-os.system("apt-get install nodejs -y")
+print(" ---- ACTUALIZANDO REPOSITORIOS ----")
+os.system("apt update")
+print(" ---- DESCARGANDO DEPENDENCIAS DE NODEJS ----")
+os.system("curl -sL https://deb.nodesource.com/setup_9.x | sudo bash -")
+print(" ---- INSTALANDO NODEJS ----")
+os.system("apt-get install nodejs")
+print(" ---- FIN INSTALACION NODEJS ----")
+
+
