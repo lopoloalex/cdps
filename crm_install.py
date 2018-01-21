@@ -8,23 +8,23 @@ print(" ---- DESCARGANDO DEPENDENCIAS DE NODEJS ----")
 os.system("curl -sL https://deb.nodesource.com/setup_8.x | sudo bash -")
 print(" ---- INSTALANDO NODEJS ----")
 os.system("apt-get install nodejs")
-print(" ---- FIN INSTALACIÓN NODEJS ----")
+print(" ---- FIN INSTALACION NODEJS ----")
 
-print(" ---- CLONACIÓN DEL CRM ----")
+print(" ---- CLONACION DEL CRM ----")
 os.system("git clone https://github.com/CORE-UPM/CRM_2017.git")
 
 os.chdir("CRM_2017")
-print(" ---- INICIO INSTALACIÓN NPM ----")
+print(" ---- INICIO INSTALACION NPM ----")
 os.system("npm install")
 os.system("npm install forever")
-print(" ---- FIN INSTALACIÓN NPM ----")
+print(" ---- FIN INSTALACION NPM ----")
 
 os.system("export DATABASE_URL=postgres://crm:xxxx@10.1.4.31:5432/crm")
 os.system("export CLOUDINARY_SUBFOLDER=/mnt/nas")
 
 # SOLO EN S1
 if socket.gethostname() == "s1":
-	print(" ---- MIGRACIÓN DE LA BASE DE DATOS ----")
+	print(" ---- MIGRACION DE LA BASE DE DATOS ----")
 	os.system("npm run-script migrate_local")
 	os.system("npm run-script seed_local")
 
