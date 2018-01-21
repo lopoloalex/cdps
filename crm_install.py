@@ -21,7 +21,7 @@ print(" ---- CLONACION DEL CRM ----")
 os.system("git clone https://github.com/CORE-UPM/CRM_2017.git")
 os.chdir("CRM_2017")
 
-
+os.system("export DATABASE_URL=postgres://crm:xxxx@10.1.4.31:5432/crm")
 print(" ---- INICIO INSTALACION NPM ----")
 os.system("npm install")
 os.system("npm install forever")
