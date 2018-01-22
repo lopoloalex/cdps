@@ -33,26 +33,26 @@ def despliegue():
 	os.system("sudo vnx -f pfinal.xml -v --create")
 	print(" ---- ESCENARIO DESPLEGADO ----")
 
-	# print(" ---- CONFIGURACION DE FIREWALL ----")
-	#Configuracion de FW desde la carpeta PracticaFinal 
-	# os.system("sudo lxc-attach --clear-env -n fw -- ")
-	# os.system("sudo lxc-attach --clear-env -n fw -- sh /fw.fw")
-	# print(" ---- FIN DE CONFIGURACION DE FIREWALL ----")
-	time.sleep(3)
-
 	print(" ---- CONFIGURACION DE SERVIDOR BASE DE DATOS ----")
-	os.system("sudo lxc-attach --clear-env -n bbdd -- wget https://raw.githubusercontent.com/lopoloalex/cdps/master/postgesql.py")
-	os.system("sudo lxc-attach --clear-env -n bbdd -- python ./../postgesql.py")
+	i = 0
+	while(i < 2):
+		os.system("sudo lxc-attach --clear-env -n bbdd -- wget https://raw.githubusercontent.com/lopoloalex/cdps/master/postgesql.py")
+		i = i + 1
+	os.system("sudo lxc-attach --clear-env -n bbdd -- python /postgesql.py")
+	os.system("sudo lxc-attach --clear-env -n bbdd -- rm /postgresql.py*")
+
 	print(" ---- FINAL CONFIGURACION DE SERVIDOR BASE DE DATOS ----")
 
 
 	print(" ---- CONFIGURACION DE CLUSTER DE ALMACENAMIENTO ----")
 	n=3 
 	while (n > 0):
-		time.sleep(3)
-		os.system("sudo lxc-attach --clear-env -n nas" +str(n)+ " -- wget https://raw.githubusercontent.com/lopoloalex/cdps/master/cluster.py")
+		i = 0
+		while(i < 2):
+			os.system("sudo lxc-attach --clear-env -n nas" +str(n)+ " -- wget https://raw.githubusercontent.com/lopoloalex/cdps/master/cluster.py")
+			i = i + 1
 		os.system("sudo lxc-attach --clear-env -n nas" +str(n)+ " -- python /cluster.py")
-		os.system("sudo lxc-attach --clear-env -n nas" +str(n)+ " -- rm /cluster.py")
+		os.system("sudo lxc-attach --clear-env -n nas" +str(n)+ " -- rm /cluster.py*")
 		n=n-1
 	#Instalacion gluster 
 	os.system("sudo lxc-attach --clear-env -n nas1 -- gluster peer probe nas2")
@@ -78,7 +78,10 @@ def despliegue():
 	print(" ---- INICIO CONFIGURACION CRM ----")
 	n = 3
 	while (n > 0):
-		os.system("sudo lxc-attach --clear-env -n s" +str(n)+ " -- wget https://raw.githubusercontent.com/lopoloalex/cdps/master/node.py")
+		i = 0
+		while(i < 2):
+			os.system("sudo lxc-attach --clear-env -n s" +str(n)+ " -- wget https://raw.githubusercontent.com/lopoloalex/cdps/master/node.py")
+			i = i + 1
 		os.system("sudo lxc-attach --clear-env -n s" +str(n)+ " -- python /node.py")
 
 		print(" ---- CLONACION DEL CRM ----")
@@ -95,7 +98,7 @@ def despliegue():
 
 		os.system("sudo lxc-attach --clear-env -n s" +str(n)+ " -- sudo iptables -t nat -A PREROUTING -i eth1 -p tcp --dport 80 -j REDIRECT --to-port 3000")
 		
-		os.system("sudo lxc-attach --clear-env -n s" +str(n)+ " -- rm /node.py")
+		os.system("sudo lxc-attach --clear-env -n s" +str(n)+ " -- rm /node.py*")
 		
 		#Configuracion del sistema de ficheros NAS en servidores
 		os.system("sudo lxc-attach --clear-env -n s" +str(n)+ " -- mkdir /CRM_2017/public/uploads")
@@ -107,6 +110,18 @@ def despliegue():
 
 	#Configuracion de lb 
 	os.system(" xterm -hold -e 'sudo lxc-attach --clear-env -n lb -- xr --verbose --server tcp:0:80 -dr -S --backend 10.1.3.11:80 --backend 10.1.3.12:80 --backend 10.1.3.13:80 --web-interface 0:8001' &")
+
+	print(" ---- CONFIGURACION DE FIREWALL ----")
+	# Configuracion de FW desde la carpeta PracticaFinal 
+	
+	i = 0
+	while(i < 2):
+		os.system("sudo lxc-attach --clear-env -n fw -- wget https://raw.githubusercontent.com/lopoloalex/cdps/master/fw.fw")
+		i = i + 1
+	os.system("sudo lxc-attach --clear-env -n fw -- sh /fw.fw")
+	os.system("sudo lxc-attach --clear-env -n fw -- rm /fw.fw.*")
+	print(" ---- FIN DE CONFIGURACION DE FIREWALL ----")
+
 	return
 
 def destroy():
@@ -114,6 +129,7 @@ def destroy():
 	os.system("sudo vnx -f pfinal.xml -v --destroy")
 	os.chdir("../../")
 	os.system("sudo rm -rf PracticaFinal")
+	return
 
 if sys.argv[1] == "create":
 	despliegue()
